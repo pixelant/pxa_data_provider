@@ -1,6 +1,6 @@
 <?php
 
-namespace Pixelant\PxaDataProvider\ViewHelpers;
+namespace Pixelant\PxaDataProvider\ViewHelpers\Provider;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -10,7 +10,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2017
+ *  (c) 2020
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,8 +35,28 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @package Pixelant\PxaDataProvider\ViewHelpers
  */
-class JsonViewHelper extends ArrayViewHelper
+class JsonViewHelper extends AbstractViewHelper
 {
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'data',
+            'array',
+            'Data to provide',
+            false,
+            []
+        );
+        $this->registerArgument(
+            'object',
+            'object',
+            'An object to provide data from',
+            false
+        );
+    }
+
     /**
      * Get object data
      *
@@ -51,6 +71,6 @@ class JsonViewHelper extends ArrayViewHelper
         RenderingContextInterface $renderingContext
     ): string
     {
-        return json_encode(self::renderStatic($arguments, $renderChildrenClosure, $renderingContext));
+        return json_encode(ArrayViewHelper::renderStatic($arguments, $renderChildrenClosure, $renderingContext));
     }
 }

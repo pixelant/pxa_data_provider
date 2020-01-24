@@ -1,8 +1,8 @@
 <?php
 
-namespace Pixelant\PxaDataProvider\ViewHelpers;
+namespace Pixelant\PxaDataProvider\ViewHelpers\Provider;
 
-use Pixelant\PxaDataProvider\Service\Model\ConfigurableDataProvider;
+use Pixelant\PxaDataProvider\Domain\DataProvider\ConfigurableDataProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -11,7 +11,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2017
+ *  (c) 2020
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

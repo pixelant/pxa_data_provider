@@ -5,6 +5,9 @@ namespace Pixelant\PxaDataProvider\Domain\DataProvider;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
  *  Copyright notice
@@ -36,6 +39,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConfigurableDataProvider implements SingletonInterface
 {
     /**
+     * Extension settings
+     *
+     * @var array
+     */
+    protected $settings;
+
+    /**
      * Settings from plugin.tx_pxaprodutmanager.settings.dataProvider
      *
      * @var array
@@ -54,10 +64,11 @@ class ConfigurableDataProvider implements SingletonInterface
      */
     public function __construct()
     {
-        $this->providerSettings = ConfigurationUtility::getSettingsByPath(
-            'dataProvider',
-            $GLOBALS['TSFE']->id
-        );
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ConfigurationManager $configurationManager */
+        $configurationManager = $objectManager->get(ConfigurationManager::class);
+        $configurationManager->setContentObject($objectManager->get(ContentObjectRenderer::class));
 
         $this->supportedClasses = array_keys($this->providerSettings);
 
