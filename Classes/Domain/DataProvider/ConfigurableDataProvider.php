@@ -7,6 +7,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -60,6 +61,11 @@ class ConfigurableDataProvider implements SingletonInterface
     protected $supportedClasses = [];
 
     /**
+     * @var ConfigurationManager
+     */
+    protected $configurationManager;
+
+    /**
      * ConfigurableDataProvider constructor.
      */
     public function __construct()
@@ -67,10 +73,21 @@ class ConfigurableDataProvider implements SingletonInterface
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ConfigurationManager $configurationManager */
-        $configurationManager = $objectManager->get(ConfigurationManager::class);
-        $configurationManager->setContentObject($objectManager->get(ContentObjectRenderer::class));
+        $this->configurationManager = $objectManager->get(ConfigurationManager::class);
+        $this->configurationManager->setContentObject($objectManager->get(ContentObjectRenderer::class));
 
+        $this->settings = $this->configurationManager->getConfiguration(
+            ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+        )['plugin.']['tx_pxadataprovider.']['settings.'];
+        $this->providerSettings = $this->settings['objectConfig.'];
         $this->supportedClasses = array_keys($this->providerSettings);
+        array_walk(
+            $this->supportedClasses,
+            function (&$item) {
+                if (substr($item, -1) === '.')
+                $item = substr($item, 0, strlen($item) - 1);
+            }
+        );
 
         //Convert comma separated lists once and for all
         foreach ($this->providerSettings as &$providerSetting) {
@@ -152,15 +169,13 @@ class ConfigurableDataProvider implements SingletonInterface
             }
         }
 
-        foreach ($objectProviderSettings['remapFieldNames'] as $originalFieldName=>$newFieldName) {
+        foreach ($objectProviderSettings['remapFieldNames.'] as $originalFieldName=>$newFieldName) {
             $data[$newFieldName] = $data[$originalFieldName];
             unset($data[$originalFieldName]);
         }
 
-        foreach ($objectProviderSettings['processFields'] as $field=>$stdWrap) {
-            /** @var ConfigurationManager $configurationManager */
-            $configurationManager = MainUtility::getObjectManager()->get(ConfigurationManager::class);
-            $contentObject = $configurationManager->getContentObject();
+        foreach ($objectProviderSettings['processFields.'] as $field=>$stdWrap) {
+            $contentObject = $this->configurationManager->getContentObject();
 
             $data[$field] = $contentObject->stdWrap($data[$field], $stdWrap);
         }
@@ -182,7 +197,7 @@ class ConfigurableDataProvider implements SingletonInterface
             return true;
         }
 
-        $classParentsFullObjectClassNames = class_parents($object);
+        $classParentsFullObjectClassNames = array_values(class_parents($object));
 
         if (count(array_intersect($classParentsFullObjectClassNames, $this->supportedClasses)) > 0) {
             $this->supportedClasses = array_unique(array_merge($classParentsFullObjectClassNames, $this->supportedClasses));
@@ -200,7 +215,7 @@ class ConfigurableDataProvider implements SingletonInterface
      */
     protected function getProviderSettingsForObject(object $object): array
     {
-        $objectAndParentClassNames = array_merge([get_class($object)], class_parents($object));
+        $objectAndParentClassNames = array_merge([get_class($object)], array_values(class_parents($object)));
 
         return $this->getProviderSettingsForClassAncestors($objectAndParentClassNames);
     }
@@ -216,7 +231,7 @@ class ConfigurableDataProvider implements SingletonInterface
     protected function getProviderSettingsForClassAncestors(array $ancestors): array
     {
         $mostRecentAncestor = array_shift($ancestors);
-        $mostRecentAncestorSettings = $this->providerSettings[$mostRecentAncestor];
+        $mostRecentAncestorSettings = $this->providerSettings[$mostRecentAncestor . '.'];
 
         if (!is_array($mostRecentAncestorSettings)) {
             $mostRecentAncestorSettings = [];
@@ -224,24 +239,24 @@ class ConfigurableDataProvider implements SingletonInterface
 
         $ancestorSettings = [];
         if ($mostRecentAncestorSettings['ignoreParents']) {
-            return $mostRecentAncestorSettings['ignoreParents'];
+            return $this->providerSettings[$mostRecentAncestor . '.'];
         }
 
         if (count($ancestors) > 0) {
             $ancestorSettings = $this->getProviderSettingsForClassAncestors($ancestors);
-        }
 
-        ArrayUtility::mergeRecursiveWithOverrule(
-            $ancestorSettings,
-            $mostRecentAncestorSettings
-        );
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $ancestorSettings,
+                $mostRecentAncestorSettings
+            );
+        }
 
         $ancestorSettings['includeFields'] = array_unique($ancestorSettings['includeFields']);
         $ancestorSettings['excludeFields'] = array_unique($ancestorSettings['excludeFields']);
 
-        $this->providerSettings[$mostRecentAncestor] = $ancestorSettings;
+        $this->providerSettings[$mostRecentAncestor . '.'] = $ancestorSettings;
         //Avoid recursing next time
-        $this->providerSettings[$mostRecentAncestor]['ignoreParents'] = true;
+        $this->providerSettings[$mostRecentAncestor . '.']['ignoreParents'] = true;
 
         return $ancestorSettings;
     }
