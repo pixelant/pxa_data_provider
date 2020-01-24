@@ -165,6 +165,8 @@ class ConfigurableDataProvider implements SingletonInterface
         foreach ($fields as $field) {
             if (method_exists($object, 'get' . $field)) {
                 $data[$field] = call_user_func([$object, 'get' . $field]);
+            } elseif (method_exists($object, 'is' . $field)) {
+                $data[$field] = call_user_func([$object, 'is' . $field]);
             }
         }
 
