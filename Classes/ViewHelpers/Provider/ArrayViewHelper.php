@@ -7,6 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits\ProviderViewHelperInitializeArgumentsTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -39,26 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 class ArrayViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
-
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
-    {
-        $this->registerArgument(
-            'data',
-            'array',
-            'Data to provide',
-            false,
-            []
-        );
-        $this->registerArgument(
-            'object',
-            'object',
-            'An object to provide data from',
-            false
-        );
-    }
+    use ProviderViewHelperInitializeArgumentsTrait;
 
     /**
      * Get filtering options

@@ -4,6 +4,8 @@ namespace Pixelant\PxaDataProvider\ViewHelpers\Provider;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits\ProviderViewHelperInitializeArgumentsTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -33,25 +35,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class JsonViewHelper extends AbstractViewHelper
 {
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
-    {
-        $this->registerArgument(
-            'data',
-            'array',
-            'Data to provide',
-            false,
-            []
-        );
-        $this->registerArgument(
-            'object',
-            'object',
-            'An object to provide data from',
-            false
-        );
-    }
+    use CompileWithRenderStatic;
+    use ProviderViewHelperInitializeArgumentsTrait;
 
     /**
      * Get object data
