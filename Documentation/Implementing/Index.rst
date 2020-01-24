@@ -35,6 +35,8 @@ Two View Helpers
 There are two view helpers with the same available arguments.
 
 
+.. _implementation-viewhelpers-array:
+
 provider.array View Helper
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -48,6 +50,9 @@ This viewhelper outputs a PHP array and can be used for further processing.
               <p>{object.name}</p>
           </f:for>
       </f:for>
+
+
+.. _implementation-viewhelpers-json:
 
 provider.json View Helper
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
