@@ -1,0 +1,17 @@
+plugin.tx_pxadataprovider {
+  settings {
+    objectConfig {
+      Pixelant\PxaProductManager\Domain\Model\Product {
+        key = product
+      }
+
+      TYPO3\CMS\Extbase\Domain\Model\Category {
+        key = category
+      }
+
+      Pixelant\PxaProductManager\Domain\Model\Order {
+        key = order
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+plugin.tx_pxadataprovider {
+  settings {
+    objectConfig {
+      TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+        key = entity
+        includeFields = uid,pid,_timestamp
+        excludeFields = pid
+        remapFieldNames {
+          uid = id
+        }
+
+        processFields {
+          _timestamp {
+            data = date : c
+          }
+        }
+      }
+    }
+  }
+}
