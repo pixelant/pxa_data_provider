@@ -90,14 +90,14 @@ class ConfigurableDataProvider implements SingletonInterface
 
         //Convert comma separated lists once and for all
         foreach ($this->providerSettings as &$providerSetting) {
-            $providerSetting['includeFields'] = GeneralUtility::trimExplode(
+            $providerSetting['includeProperties'] = GeneralUtility::trimExplode(
                 ',',
-                $providerSetting['includeFields'],
+                $providerSetting['includeProperties'],
                 true
             );
-            $providerSetting['excludeFields'] = GeneralUtility::trimExplode(
+            $providerSetting['excludeProperties'] = GeneralUtility::trimExplode(
                 ',',
-                $providerSetting['excludeFields'],
+                $providerSetting['excludeProperties'],
                 true
             );
         }
@@ -158,7 +158,7 @@ class ConfigurableDataProvider implements SingletonInterface
 
         $objectProviderSettings = $this->getProviderSettingsForObject($object);
 
-        $fields = array_diff($objectProviderSettings['includeFields'], $objectProviderSettings['excludeFields']);
+        $fields = array_diff($objectProviderSettings['includeProperties'], $objectProviderSettings['excludeProperties']);
 
         $data = [];
 
@@ -170,12 +170,12 @@ class ConfigurableDataProvider implements SingletonInterface
             }
         }
 
-        foreach ($objectProviderSettings['remapFieldNames.'] as $originalFieldName=>$newFieldName) {
+        foreach ($objectProviderSettings['remapProperties.'] as $originalFieldName=>$newFieldName) {
             $data[$newFieldName] = $data[$originalFieldName];
             unset($data[$originalFieldName]);
         }
 
-        foreach ($objectProviderSettings['processFields.'] as $field=>$stdWrap) {
+        foreach ($objectProviderSettings['processProperties.'] as $field=>$stdWrap) {
             $contentObject = $this->configurationManager->getContentObject();
 
             $data[$field] = $contentObject->stdWrap($data[$field], $stdWrap);
@@ -252,8 +252,8 @@ class ConfigurableDataProvider implements SingletonInterface
             );
         }
 
-        $ancestorSettings['includeFields'] = array_unique($ancestorSettings['includeFields']);
-        $ancestorSettings['excludeFields'] = array_unique($ancestorSettings['excludeFields']);
+        $ancestorSettings['includeProperties'] = array_unique($ancestorSettings['includeProperties']);
+        $ancestorSettings['excludeProperties'] = array_unique($ancestorSettings['excludeProperties']);
 
         $this->providerSettings[$mostRecentAncestor . '.'] = $ancestorSettings;
         //Avoid recursing next time
