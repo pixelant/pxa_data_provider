@@ -2,10 +2,8 @@
 
 namespace Pixelant\PxaDataProvider\ViewHelpers\Provider;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /***************************************************************
  *  Copyright notice
@@ -32,8 +30,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Returns data
- *
- * @package Pixelant\PxaDataProvider\ViewHelpers
  */
 class JsonViewHelper extends AbstractViewHelper
 {
@@ -69,8 +65,7 @@ class JsonViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ): string
-    {
+    ): string {
         return json_encode(ArrayViewHelper::renderStatic($arguments, $renderChildrenClosure, $renderingContext));
     }
 }
