@@ -66,20 +66,28 @@ class ConfigurableDataProvider implements SingletonInterface
 
     /**
      * ConfigurableDataProvider constructor.
+     *
+     * @param array $settings to apply. Defaults to fetch from TypoScript configuration
      */
-    public function __construct()
+    public function __construct(array $settings = null)
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var ConfigurationManager $configurationManager */
-        $this->configurationManager = $objectManager->get(ConfigurationManager::class);
-        $this->configurationManager->setContentObject($objectManager->get(ContentObjectRenderer::class));
+        if ($settings !== null) {
+            $this->settings = $settings;
+        } else {
+            /** @var ObjectManager $objectManager */
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            /** @var ConfigurationManager $configurationManager */
+            $this->configurationManager = $objectManager->get(ConfigurationManager::class);
+            $this->configurationManager->setContentObject($objectManager->get(ContentObjectRenderer::class));
 
-        $this->settings = $this->configurationManager->getConfiguration(
-            ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-        )['plugin.']['tx_pxadataprovider.']['settings.'];
+            $this->settings = $this->configurationManager->getConfiguration(
+                ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+            )['plugin.']['tx_pxadataprovider.']['settings.'];
+        }
+
         $this->providerSettings = $this->settings['objectConfig.'];
         $this->supportedClasses = array_keys($this->providerSettings);
+
         array_walk(
             $this->supportedClasses,
             function (&$item) {
