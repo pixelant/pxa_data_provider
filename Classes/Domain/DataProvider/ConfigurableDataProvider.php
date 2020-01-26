@@ -206,7 +206,7 @@ class ConfigurableDataProvider implements SingletonInterface
      * @param object $object
      * @return bool
      */
-    protected function isObjectSupported(object $object)
+    public function isObjectSupported(object $object)
     {
         $fullObjectClassName = get_class($object);
 
@@ -230,7 +230,7 @@ class ConfigurableDataProvider implements SingletonInterface
      * @param object $object
      * @return array
      */
-    protected function getProviderSettingsForObject(object $object): array
+    public function getProviderSettingsForObject(object $object): array
     {
         $objectAndParentClassNames = array_merge([get_class($object)], array_values(class_parents($object)));
 
