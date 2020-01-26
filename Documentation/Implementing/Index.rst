@@ -11,6 +11,71 @@ Implementation
 Basic Usage
 -----------
 
+You can use the extension by calling functions on the
+:php:`ConfigurableDataProvider` class or through view helpers in your Fluid
+templates.
+
+.. _implementation-basics-configurabledataprovider:
+
+Using the ConfigurableDataProvider
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :php:`Pixelant\PxaDataProvider\Domain\DataProvider\ConfigurableDataProvider`
+class can be used in your own extensions.
+
+It is a singleton instance that defaults to using the TypoScript configuration,
+although you can choose to override it by supplying a different configuration
+to the constructor.
+
+**Example:** Retrieving an instance of the :php:`ConfigurableDataProvider`
+object with default settings from TypoScript:
+
+.. code-block:: php
+
+   $dataProvider = GeneralUtility::makeInstance(
+       ConfigurableDataProvider::class
+   );
+
+**Example:** Retrieving an instance of the :php:`ConfigurableDataProvider`
+object with custom settings:
+
+.. code-block:: php
+
+   $dataProvider = GeneralUtility::makeInstance(
+       ConfigurableDataProvider::class,
+       $settings
+   );
+
+**Retrieving data:** The object has two public functions:
+
+.. code-block:: php
+
+   //Returns an array with data for a single object
+   $dataArray = $dataProvider->dataForObject($object);
+
+   //Returns an array with data for multiple objects in an array
+   $dataArray = $dataProvider->dataForObject($arrayOfObjects);
+
+Both functions return array data formatted in the same way:
+
+.. code-block:: php
+
+   [
+       <key> => [
+           [
+               <property> => <value>,
+               ...
+           ]
+       ],
+       ...
+   ]
+
+
+.. _implementation-basics-viewhelpers:
+
+View Helpers
+~~~~~~~~~~~~
+
 You can use the extension's view helpers in your Fluid templates, either inline
 or as tags.
 
