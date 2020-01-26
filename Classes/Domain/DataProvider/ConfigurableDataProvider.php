@@ -158,15 +158,15 @@ class ConfigurableDataProvider implements SingletonInterface
 
         $objectProviderSettings = $this->getProviderSettingsForObject($object);
 
-        $fields = array_diff($objectProviderSettings['includeProperties'], $objectProviderSettings['excludeProperties']);
+        $properties = array_diff($objectProviderSettings['includeProperties'], $objectProviderSettings['excludeProperties']);
 
         $data = [];
 
-        foreach ($fields as $field) {
-            if (method_exists($object, 'get' . $field)) {
-                $data[$field] = call_user_func([$object, 'get' . $field]);
-            } elseif (method_exists($object, 'is' . $field)) {
-                $data[$field] = call_user_func([$object, 'is' . $field]);
+        foreach ($properties as $property) {
+            if (method_exists($object, 'get' . $property)) {
+                $data[$property] = call_user_func([$object, 'get' . $property]);
+            } elseif (method_exists($object, 'is' . $property)) {
+                $data[$property] = call_user_func([$object, 'is' . $property]);
             }
         }
 
@@ -175,10 +175,10 @@ class ConfigurableDataProvider implements SingletonInterface
             unset($data[$originalFieldName]);
         }
 
-        foreach ($objectProviderSettings['processProperties.'] as $field=>$stdWrap) {
+        foreach ($objectProviderSettings['processProperties.'] as $property=>$stdWrap) {
             $contentObject = $this->configurationManager->getContentObject();
 
-            $data[$field] = $contentObject->stdWrap($data[$field], $stdWrap);
+            $data[$property] = $contentObject->stdWrap($data[$property], $stdWrap);
         }
 
         return $data;
