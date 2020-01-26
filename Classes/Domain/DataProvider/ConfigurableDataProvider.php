@@ -246,6 +246,17 @@ class ConfigurableDataProvider implements SingletonInterface
         if (count($ancestors) > 0) {
             $ancestorSettings = $this->getProviderSettingsForClassAncestors($ancestors);
 
+            // Remove now included properties from the previously excluded properties to ensure that new includes
+            // override old excludes.
+            $mostRecentAncestorSettings['excludeProperties'] = array_diff(
+                // Extract previously exluded properties that are now in the included list
+                array_intersect(
+                    $mostRecentAncestorSettings['excludeProperties'],
+                    $ancestorSettings['includeProperties']
+                ),
+                $mostRecentAncestorSettings['excludeProperties']
+            );
+
             ArrayUtility::mergeRecursiveWithOverrule(
                 $ancestorSettings,
                 $mostRecentAncestorSettings
