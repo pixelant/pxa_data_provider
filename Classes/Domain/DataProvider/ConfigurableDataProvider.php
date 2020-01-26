@@ -176,6 +176,14 @@ class ConfigurableDataProvider implements SingletonInterface
             } elseif (method_exists($object, 'is' . $property)) {
                 $data[$property] = call_user_func([$object, 'is' . $property]);
             }
+
+            if (isset($data[$property]) && is_object($data[$property])) {
+                if ($data[$property] instanceof \Iterator) {
+                    $data[$property] = $this->dataForObjects($data[$property]);
+                } else {
+                    $data[$property] = $this->dataForObject($data[$property]);
+                }
+            }
         }
 
         foreach ($objectProviderSettings['remapProperties.'] as $originalFieldName=>$newFieldName) {
