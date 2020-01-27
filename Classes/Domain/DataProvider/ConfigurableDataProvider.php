@@ -179,7 +179,7 @@ class ConfigurableDataProvider implements SingletonInterface
 
             if (isset($data[$property]) && is_object($data[$property])) {
                 if ($data[$property] instanceof \Iterator) {
-                    $data[$property] = $this->dataForObjects($data[$property]);
+                    $data[$property] = $this->dataForObjects(iterator_to_array($data[$property], false));
                 } else {
                     $data[$property] = $this->dataForObject($data[$property]);
                 }
