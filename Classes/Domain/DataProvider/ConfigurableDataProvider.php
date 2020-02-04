@@ -85,7 +85,7 @@ class ConfigurableDataProvider implements SingletonInterface
             )['plugin.']['tx_pxadataprovider.']['settings.'];
         }
 
-        $this->providerSettings = $this->settings['objectConfig.'];
+        $this->providerSettings = $this->settings['objectConfig.'] ?? [];
         $this->supportedClasses = array_keys($this->providerSettings);
 
         array_walk(
@@ -98,16 +98,20 @@ class ConfigurableDataProvider implements SingletonInterface
 
         //Convert comma separated lists once and for all
         foreach ($this->providerSettings as &$providerSetting) {
-            $providerSetting['includeProperties'] = GeneralUtility::trimExplode(
-                ',',
-                $providerSetting['includeProperties'],
-                true
-            );
-            $providerSetting['excludeProperties'] = GeneralUtility::trimExplode(
-                ',',
-                $providerSetting['excludeProperties'],
-                true
-            );
+            if ($providerSetting['includeProperties'] !== null && $providerSetting['includeProperties'] !== '') {
+                $providerSetting['includeProperties'] = GeneralUtility::trimExplode(
+                    ',',
+                    $providerSetting['includeProperties'],
+                    true
+                );
+            }
+            if ($providerSetting['excludeProperties'] !== null && $providerSetting['excludeProperties'] !== '') {
+                $providerSetting['excludeProperties'] = GeneralUtility::trimExplode(
+                    ',',
+                    $providerSetting['excludeProperties'],
+                    true
+                );
+            }
         }
     }
 
@@ -267,11 +271,15 @@ class ConfigurableDataProvider implements SingletonInterface
             $mostRecentAncestorSettings['excludeProperties'] = array_diff(
                 // Extract previously exluded properties that are now in the included list
                 array_intersect(
-                    $mostRecentAncestorSettings['excludeProperties'],
-                    $ancestorSettings['includeProperties']
+                    $mostRecentAncestorSettings['excludeProperties'] ?? [],
+                    $ancestorSettings['includeProperties'] ?? []
                 ),
-                $mostRecentAncestorSettings['excludeProperties']
+                $mostRecentAncestorSettings['excludeProperties'] ?? []
             );
+
+            if (count($mostRecentAncestorSettings['excludeProperties']) === 0) {
+                unset($mostRecentAncestorSettings['excludeProperties']);
+            }
 
             ArrayUtility::mergeRecursiveWithOverrule(
                 $ancestorSettings,
@@ -279,8 +287,12 @@ class ConfigurableDataProvider implements SingletonInterface
             );
         }
 
-        $ancestorSettings['includeProperties'] = array_unique($ancestorSettings['includeProperties']);
-        $ancestorSettings['excludeProperties'] = array_unique($ancestorSettings['excludeProperties']);
+        if (isset($ancestorSettings['includeProperties'])) {
+            $ancestorSettings['includeProperties'] = array_unique($ancestorSettings['includeProperties']);
+        }
+        if (isset($ancestorSettings['excludeProperties'])) {
+            $ancestorSettings['excludeProperties'] = array_unique($ancestorSettings['excludeProperties']);
+        }
 
         $this->providerSettings[$mostRecentAncestor . '.'] = $ancestorSettings;
         //Avoid recursing next time
