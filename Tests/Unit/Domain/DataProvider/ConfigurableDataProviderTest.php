@@ -16,7 +16,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
     {
         $subject = new ConfigurableDataProvider([]);
 
-        self::assertIsObject($subject);
+        $this->assertIsObject($subject);
     }
 
     /**
@@ -26,7 +26,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
     {
         $subject = new ConfigurableDataProvider([]);
 
-        self::assertEquals(
+        $this->assertEquals(
             false,
             $subject->isObjectSupported(new \stdClass())
         );
@@ -43,7 +43,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
             ]
         ]);
 
-        self::assertEquals(
+        $this->assertEquals(
             true,
             $subject->isObjectSupported(new \stdClass())
         );
@@ -63,7 +63,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
             ]
         ]);
 
-        self::assertEquals(
+        $this->assertEquals(
             'splobject',
             $subject->getProviderSettingsForObject(new \SplQueue())['key']
         );
@@ -86,7 +86,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
             ]
         ]);
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'property2',
                 'property1'
@@ -113,7 +113,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
 
         $object = new FrontendUser($theUsername);
 
-        self::assertEquals(
+        $this->assertEquals(
             $theUsername,
             $subject->dataForObject($object)['username']
         );
@@ -137,7 +137,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
 
         $object = new FrontendUser($theUsername);
 
-        self::assertEquals(
+        $this->assertEquals(
             $theUsername,
             $subject->dataForObjects([$object])['frontenduser'][0]['username']
         );
@@ -164,7 +164,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
 
         $object = new FrontendUser($theUsername);
 
-        self::assertEquals(
+        $this->assertEquals(
             $theUsername,
             $subject->dataForObject($object)['remappedproperty']
         );
@@ -191,7 +191,7 @@ class ConfigurableDataProviderTest extends UnitTestCase
 
         $object = new FrontendUser($theUsername);
 
-        self::assertEquals(
+        $this->assertEquals(
             null,
             $subject->dataForObject($object)['username']
         );
