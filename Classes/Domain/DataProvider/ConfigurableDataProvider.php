@@ -258,10 +258,11 @@ class ConfigurableDataProvider implements SingletonInterface
             $mostRecentAncestorSettings = [];
         }
 
-        $ancestorSettings = [];
         if ($mostRecentAncestorSettings['ignoreParents']) {
             return $this->providerSettings[$mostRecentAncestor . '.'];
         }
+
+        $ancestorSettings = [];
 
         if (count($ancestors) > 0) {
             $ancestorSettings = $this->getProviderSettingsForClassAncestors($ancestors);
@@ -280,12 +281,12 @@ class ConfigurableDataProvider implements SingletonInterface
             if (count($mostRecentAncestorSettings['excludeProperties']) === 0) {
                 unset($mostRecentAncestorSettings['excludeProperties']);
             }
-
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $ancestorSettings,
-                $mostRecentAncestorSettings
-            );
         }
+
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $ancestorSettings,
+            $mostRecentAncestorSettings
+        );
 
         if (isset($ancestorSettings['includeProperties'])) {
             $ancestorSettings['includeProperties'] = array_unique($ancestorSettings['includeProperties']);
@@ -295,6 +296,7 @@ class ConfigurableDataProvider implements SingletonInterface
         }
 
         $this->providerSettings[$mostRecentAncestor . '.'] = $ancestorSettings;
+
         //Avoid recursing next time
         $this->providerSettings[$mostRecentAncestor . '.']['ignoreParents'] = true;
 
