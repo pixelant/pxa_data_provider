@@ -6,10 +6,10 @@
 
 # Composer
 /.Build/*
-composer.lock
+/composer.lock
 
 # TYPO3 9
 /var
 
 # Coding style
-.php_cs.cache
+/.php_cs.cache
