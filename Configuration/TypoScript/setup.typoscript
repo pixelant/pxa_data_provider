@@ -1,7 +1,7 @@
 plugin.tx_pxadataprovider {
-  settings {
-    objectConfig {
+    settings {
+        objectConfig {
 
+        }
     }
-  }
 }
