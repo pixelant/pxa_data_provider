@@ -286,10 +286,7 @@ class ConfigurableDataProvider implements SingletonInterface
             }
         }
 
-        ArrayUtility::mergeRecursiveWithOverrule(
-            $ancestorSettings,
-            $mostRecentAncestorSettings
-        );
+        $ancestorSettings = array_merge_recursive($ancestorSettings, $mostRecentAncestorSettings);
 
         if (isset($ancestorSettings['includeProperties'])) {
             $ancestorSettings['includeProperties'] = array_unique($ancestorSettings['includeProperties']);
