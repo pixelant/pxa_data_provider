@@ -3,11 +3,11 @@
 namespace Pixelant\PxaDataProvider\ViewHelpers\Provider;
 
 use Pixelant\PxaDataProvider\Domain\DataProvider\ConfigurableDataProvider;
+use Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits\ProviderViewHelperInitializeArgumentsTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits\ProviderViewHelperInitializeArgumentsTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -34,8 +34,6 @@ use Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits\ProviderViewHelperIniti
 
 /**
  * Returns data
- *
- * @package Pixelant\PxaDataProvider\ViewHelpers
  */
 class ArrayViewHelper extends AbstractViewHelper
 {
@@ -54,8 +52,7 @@ class ArrayViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ): array
-    {
+    ): array {
         $data = $arguments['data'];
         $object = $arguments['object'];
 

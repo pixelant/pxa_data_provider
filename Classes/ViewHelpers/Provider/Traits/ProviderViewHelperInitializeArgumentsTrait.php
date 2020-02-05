@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits;
 
 /***************************************************************
@@ -26,10 +25,8 @@ namespace Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Trait introduces the standard initializeArguments() function for provider view helpers with "data" and "object"
- * @package ViewHelpers\Provider\Traits
  */
 trait ProviderViewHelperInitializeArgumentsTrait
 {

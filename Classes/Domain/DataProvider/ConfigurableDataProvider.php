@@ -5,10 +5,8 @@ namespace Pixelant\PxaDataProvider\Domain\DataProvider;
 use InvalidArgumentException;
 use Iterator;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -37,7 +35,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class ConfigurableDataProvider
- * @package PxaDataProvider\Domain\DataProvider
  */
 class ConfigurableDataProvider implements SingletonInterface
 {
@@ -94,8 +91,9 @@ class ConfigurableDataProvider implements SingletonInterface
         array_walk(
             $this->supportedClasses,
             function (&$item) {
-                if (substr($item, -1) === '.')
-                $item = substr($item, 0, strlen($item) - 1);
+                if (substr($item, -1) === '.') {
+                    $item = substr($item, 0, strlen($item) - 1);
+                }
             }
         );
 
@@ -129,7 +127,7 @@ class ConfigurableDataProvider implements SingletonInterface
         $data = [];
 
         foreach ($objects as $index=>$object) {
-            if($object === null) {
+            if ($object === null) {
                 continue;
             }
 

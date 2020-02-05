@@ -2,10 +2,10 @@
 
 namespace Pixelant\PxaDataProvider\ViewHelpers\Provider;
 
+use Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits\ProviderViewHelperInitializeArgumentsTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use Pixelant\PxaDataProvider\ViewHelpers\Provider\Traits\ProviderViewHelperInitializeArgumentsTrait;
 
 /***************************************************************
  *  Copyright notice
