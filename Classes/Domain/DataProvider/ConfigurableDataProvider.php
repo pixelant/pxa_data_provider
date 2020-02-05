@@ -179,18 +179,10 @@ class ConfigurableDataProvider implements SingletonInterface
         $data = [];
 
         foreach ($properties as $property) {
-            if (method_exists($object, 'get' . $property)) {
-                $data[$property] = call_user_func([$object, 'get' . $property]);
-            } elseif (method_exists($object, 'is' . $property)) {
-                $data[$property] = call_user_func([$object, 'is' . $property]);
-            }
+            $data[$property] = $this->getPropertyFromObject($property, $object);
 
-            if (isset($data[$property]) && is_object($data[$property])) {
-                if ($data[$property] instanceof Iterator) {
-                    $data[$property] = $this->dataForObjects(iterator_to_array($data[$property], false));
-                } else {
-                    $data[$property] = $this->dataForObject($data[$property]);
-                }
+            if ($data[$property] === null) {
+                unset($data[$property]);
             }
         }
 
@@ -206,6 +198,32 @@ class ConfigurableDataProvider implements SingletonInterface
                 $contentObject = $this->configurationManager->getContentObject();
 
                 $data[$property] = $contentObject->stdWrap($data[$property], $stdWrap);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param string $property
+     * @param object $object
+     * @return mixed|null
+     */
+    protected function getPropertyFromObject(string $property, object $object)
+    {
+        $data = null;
+
+        if (method_exists($object, 'get' . $property)) {
+            $data = call_user_func([$object, 'get' . $property]);
+        } elseif (method_exists($object, 'is' . $property)) {
+            $data = call_user_func([$object, 'is' . $property]);
+        }
+
+        if (isset($data[$property]) && is_object($data[$property])) {
+            if ($data instanceof Iterator) {
+                $data = $this->dataForObjects(iterator_to_array($data[$property], false));
+            } else {
+                $data = $this->dataForObject($data[$property]);
             }
         }
 
