@@ -126,7 +126,7 @@ class ConfigurableDataProvider implements SingletonInterface
     {
         $data = [];
 
-        foreach ($objects as $index=>$object) {
+        foreach ($objects as $index => $object) {
             if ($object === null) {
                 continue;
             }
@@ -195,14 +195,14 @@ class ConfigurableDataProvider implements SingletonInterface
         }
 
         if (is_array($objectProviderSettings['remapProperties.'])) {
-            foreach ($objectProviderSettings['remapProperties.'] as $originalFieldName=>$newFieldName) {
+            foreach ($objectProviderSettings['remapProperties.'] as $originalFieldName => $newFieldName) {
                 $data[$newFieldName] = $data[$originalFieldName];
                 unset($data[$originalFieldName]);
             }
         }
 
         if (is_array($objectProviderSettings['processProperties.'])) {
-            foreach ($objectProviderSettings['processProperties.'] as $property=>$stdWrap) {
+            foreach ($objectProviderSettings['processProperties.'] as $property => $stdWrap) {
                 $contentObject = $this->configurationManager->getContentObject();
 
                 $data[$property] = $contentObject->stdWrap($data[$property], $stdWrap);
