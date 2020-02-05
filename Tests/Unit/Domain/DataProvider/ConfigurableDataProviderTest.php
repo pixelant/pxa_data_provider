@@ -18,7 +18,10 @@ class ConfigurableDataProviderTest extends UnitTestCase
     {
         $subject = new ConfigurableDataProvider([]);
 
-        $this->assertIsObject($subject);
+        $this->assertEquals(
+            true,
+            is_object($subject)
+        );
     }
 
     /**
