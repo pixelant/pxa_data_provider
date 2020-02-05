@@ -173,7 +173,10 @@ class ConfigurableDataProvider implements SingletonInterface
 
         $objectProviderSettings = $this->getProviderSettingsForObject($object);
 
-        $properties = array_diff($objectProviderSettings['includeProperties'], $objectProviderSettings['excludeProperties']);
+        $properties = array_diff(
+            $objectProviderSettings['includeProperties'] ?? [],
+            $objectProviderSettings['excludeProperties'] ?? []
+        );
 
         $data = [];
 
@@ -193,15 +196,19 @@ class ConfigurableDataProvider implements SingletonInterface
             }
         }
 
-        foreach ($objectProviderSettings['remapProperties.'] as $originalFieldName=>$newFieldName) {
-            $data[$newFieldName] = $data[$originalFieldName];
-            unset($data[$originalFieldName]);
+        if (is_array($objectProviderSettings['remapProperties.'])) {
+            foreach ($objectProviderSettings['remapProperties.'] as $originalFieldName=>$newFieldName) {
+                $data[$newFieldName] = $data[$originalFieldName];
+                unset($data[$originalFieldName]);
+            }
         }
 
-        foreach ($objectProviderSettings['processProperties.'] as $property=>$stdWrap) {
-            $contentObject = $this->configurationManager->getContentObject();
+        if (is_array($objectProviderSettings['processProperties.'])) {
+            foreach ($objectProviderSettings['processProperties.'] as $property=>$stdWrap) {
+                $contentObject = $this->configurationManager->getContentObject();
 
-            $data[$property] = $contentObject->stdWrap($data[$property], $stdWrap);
+                $data[$property] = $contentObject->stdWrap($data[$property], $stdWrap);
+            }
         }
 
         return $data;
