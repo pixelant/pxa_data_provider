@@ -23,7 +23,7 @@
 		"nimut/testing-framework": "^4.0"
 	},
 	"replace": {
-		"pxa_data_provider": "self.version",
+		"pixelant/pxa_data_provider": "self.version",
 		"typo3-ter/pxa-data-provider": "self.version"
 	},
 	"autoload": {
