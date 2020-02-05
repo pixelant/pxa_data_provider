@@ -229,7 +229,10 @@ class ConfigurableDataProvider implements SingletonInterface
         $classParentsFullObjectClassNames = array_values(class_parents($object));
 
         if (count(array_intersect($classParentsFullObjectClassNames, $this->supportedClasses)) > 0) {
-            $this->supportedClasses = array_unique(array_merge($classParentsFullObjectClassNames, $this->supportedClasses));
+            $this->supportedClasses = array_unique(array_merge(
+                $classParentsFullObjectClassNames,
+                $this->supportedClasses
+            ));
             return true;
         }
 
