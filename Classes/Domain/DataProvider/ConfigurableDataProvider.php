@@ -2,10 +2,13 @@
 
 namespace Pixelant\PxaDataProvider\Domain\DataProvider;
 
+use InvalidArgumentException;
+use Iterator;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -118,7 +121,7 @@ class ConfigurableDataProvider implements SingletonInterface
     /**
      * @param array $objects
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return array
      */
     public function dataForObjects(array $objects): array
@@ -131,7 +134,7 @@ class ConfigurableDataProvider implements SingletonInterface
             }
 
             if (!$this->isObjectSupported($object)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Object at index "' . $index . '" is not an instance of a supported class '
                     . '. Supplied value was "' . get_class($object) . '". Supported classes are: '
                     . implode(', ', array_keys($this->providerSettings)),
@@ -154,13 +157,13 @@ class ConfigurableDataProvider implements SingletonInterface
     /**
      * @param object $object
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return array
      */
     public function dataForObject(object $object): array
     {
         if (!$this->isObjectSupported($object)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Object supplied is not an instance of a supported class '
                 . '. Supplied object class was "' . get_class($object) . '". Supported classes are: '
                 . implode(', ', array_keys($this->providerSettings)),
@@ -182,7 +185,7 @@ class ConfigurableDataProvider implements SingletonInterface
             }
 
             if (isset($data[$property]) && is_object($data[$property])) {
-                if ($data[$property] instanceof \Iterator) {
+                if ($data[$property] instanceof Iterator) {
                     $data[$property] = $this->dataForObjects(iterator_to_array($data[$property], false));
                 } else {
                     $data[$property] = $this->dataForObject($data[$property]);
