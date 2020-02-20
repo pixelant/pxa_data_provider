@@ -69,6 +69,9 @@
 		"fix:php-sniff": "phpcbf Classes Tests",
 		"post-autoload-dump": [
 			"@link-extension"
+		],
+		"docs:generate": [
+			"docker run --rm t3docs/render-documentation show-shell-commands > tempfile.sh; echo 'dockrun_t3rd makehtml' >> tempfile.sh; bash tempfile.sh; rm tempfile.sh"
 		]
 	},
 	"extra": {

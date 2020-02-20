@@ -1,48 +1,46 @@
-
 Configurable Data Provider
 ==========================
 
 .. only:: html
 
 :Classification:
-    <extension key>
+   pxa_data_provider
 
 :Version:
-    |release|
+   |release|
 
 :Language:
-    en
+   en
 
 :Description:
-    How configure and use the TYPO3 extension <extension name>
+   Configurable data provider for easy data sharing with external scripts such as Google Tag Manager.
 
 :Keywords:
-    data provider
+   data provider
 
 :Copyright:
-    2020
+   2020
 
 :Author:
-    Pixelant.net
+   Pixelant.net
 
 :Email:
-    info@pixelant.net
+   info@pixelant.net
 
 :License:
-    This document is published under the Open Publication License
-    available from http://www.opencontent.org/openpub/
+   This document is published under the Open Publication License
+   available from http://www.opencontent.org/openpub/
 
 :Rendered:
-    |today|
+   |today|
 
 **Table of Contents**
 
 .. toctree::
-	:maxdepth: 3
-	:titlesonly:
+   :maxdepth: 3
+   :titlesonly:
+   :glob:
 
-	Introduction/Index
-	Configuration/Index
+   Introduction/Index
+   Configuration/Index
    Implementing/Index
-
-

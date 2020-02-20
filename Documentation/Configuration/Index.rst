@@ -249,8 +249,8 @@ processProperties
           wrap = <name>|</name>
         }
         _timestamp {
-          data = date : c
-        }
+         data = date : c
+        }
       }
 
    Will output JSON (formatting added):

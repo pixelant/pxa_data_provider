@@ -1,6 +1,5 @@
 on:
   - pull_request
-  - push
 
 name: CI
 
@@ -69,6 +68,18 @@ jobs:
 
       - name: Run PHP Code Sniffer
         run: composer ci:php:sniff
+
+  docs-generate:
+    name: Docs Generate & Check
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Generate documentation
+        run: OUTPUT=`composer docs:generate`; echo "{$OUTPUT}"; echo -n "{$OUTPUT}" | grep "There are no Sphinx warnings"
 
   unit-tests:
     name: Unit tests

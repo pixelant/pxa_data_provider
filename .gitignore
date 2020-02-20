@@ -13,3 +13,7 @@
 
 # Coding style
 /.php_cs.cache
+
+# Documentation
+/Documentation-GENERATED-temp
+/tempfile.sh
