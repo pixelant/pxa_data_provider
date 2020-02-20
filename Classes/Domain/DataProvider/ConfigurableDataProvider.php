@@ -221,11 +221,11 @@ class ConfigurableDataProvider implements SingletonInterface
             $data = call_user_func([$object, 'is' . $property]);
         }
 
-        if (isset($data[$property]) && is_object($data[$property])) {
+        if (is_object($data)) {
             if ($data instanceof Iterator) {
-                $data = $this->dataForObjects(iterator_to_array($data[$property], false));
+                $data = $this->dataForObjects(iterator_to_array($data, false));
             } else {
-                $data = $this->dataForObject($data[$property]);
+                $data = $this->dataForObject($data);
             }
         }
 
@@ -315,6 +315,7 @@ class ConfigurableDataProvider implements SingletonInterface
         }
 
         $ancestorSettings = array_merge_recursive($ancestorSettings, $mostRecentAncestorSettings);
+        $ancestorSettings['key'] = $mostRecentAncestorSettings['key'] ?? $ancestorSettings['key'];
 
         if (isset($ancestorSettings['includeProperties'])) {
             $ancestorSettings['includeProperties'] = array_unique($ancestorSettings['includeProperties']);

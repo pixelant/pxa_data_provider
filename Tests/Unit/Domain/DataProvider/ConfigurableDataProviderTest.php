@@ -77,6 +77,28 @@ class ConfigurableDataProviderTest extends UnitTestCase
     /**
      * @test
      */
+    public function subclassInheritsConfigurationFromParentAndReplacesNonArrays()
+    {
+        $subject = new ConfigurableDataProvider([
+            'objectConfig.' => [
+                'SplDoublyLinkedList.' => [
+                    'key' => 'splobject'
+                ],
+                'SplQueue.' => [
+                    'key' => 'splqueue'
+                ]
+            ]
+        ]);
+
+        $this->assertEquals(
+            'splqueue',
+            $subject->getProviderSettingsForObject(new \SplQueue())['key']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function currentIncludePropertiesOverrideParentExcludeProperties()
     {
         $subject = new ConfigurableDataProvider([
