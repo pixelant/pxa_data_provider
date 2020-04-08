@@ -126,6 +126,18 @@ class ConfigurableDataProvider implements SingletonInterface
      */
     public function dataForObjects(array $objects): array
     {
+        foreach ($objects as $key => $object) {
+            if ($object instanceof Iterator || is_array($object)) {
+                if ($object instanceof Iterator) {
+                    $object = iterator_to_array($object);
+                }
+
+                unset($objects[$key]);
+
+                $objects = array_merge($objects, $object);
+            }
+        }
+
         $data = [];
 
         foreach ($objects as $index => $object) {

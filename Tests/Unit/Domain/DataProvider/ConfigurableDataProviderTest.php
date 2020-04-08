@@ -173,6 +173,40 @@ class ConfigurableDataProviderTest extends UnitTestCase
     /**
      * @test
      */
+    public function dataForObjectsFlattensArraysAndIterators()
+    {
+        $subject = new ConfigurableDataProvider([
+            'objectConfig.' => [
+                'TYPO3\CMS\Extbase\Domain\Model\FrontendUser.' => [
+                    'key' => 'frontenduser',
+                    'includeProperties' => 'username'
+                ]
+            ]
+        ]);
+
+        $theUsername = 'theUsername';
+
+        $object1 = new FrontendUser($theUsername . '1');
+        $object2 = new FrontendUser($theUsername . '2');
+        $object3 = new FrontendUser($theUsername . '3');
+
+        $arrayOfObject2And3 = [$object2, $object3];
+
+        $this->assertEquals(
+            [
+                'frontenduser' => [
+                    ['username' => $theUsername . '1'],
+                    ['username' => $theUsername . '2'],
+                    ['username' => $theUsername . '3'],
+                ]
+            ],
+            $subject->dataForObjects([$object1, $arrayOfObject2And3])
+        );
+    }
+
+    /**
+     * @test
+     */
     public function remapPropertiesRemapsProperties()
     {
         $subject = new ConfigurableDataProvider([
