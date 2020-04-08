@@ -209,6 +209,8 @@ class ConfigurableDataProvider implements SingletonInterface
 
         if (is_array($objectProviderSettings['processProperties.'])) {
             foreach ($objectProviderSettings['processProperties.'] as $property => $stdWrap) {
+                $property = substr($property, 0, -1);
+
                 $contentObject = $this->configurationManager->getContentObject();
 
                 $data[$property] = $contentObject->stdWrap($data[$property], $stdWrap);
